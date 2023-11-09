@@ -2,15 +2,25 @@ package main
 
 import "fmt"
 
-// PaymentStrategy interface defines how the payment should be processed.
+// PaymentStrategy interface
 type PaymentStrategy interface {
-	Pay(amount float64) bool
+    Pay(amount float64) bool
 }
 
-// CashPayment is a Strategy for paying with cash.
+// CashPayment strategy
 type CashPayment struct{}
 
 func (cp *CashPayment) Pay(amount float64) bool {
-	fmt.Printf("Paid $%.2f using cash.\n", amount)
-	return true // Assuming cash payment always succeeds
+    fmt.Printf("Paid $%.2f using cash.\n", amount)
+    return true // Assuming cash payment always succeeds
+}
+
+// PayPalPayment strategy
+type PayPalPayment struct {
+    email string
+}
+
+func (pp *PayPalPayment) Pay(amount float64) bool {
+    fmt.Printf("Paid $%.2f using PayPal (Email: %s).\n", amount, pp.email)
+    return true // Assuming PayPal payment always succeeds
 }

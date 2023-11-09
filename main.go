@@ -45,20 +45,41 @@ func main() {
 		case 1:
 			shop.Inventory.ListProducts()
 			fmt.Print("Enter product ID to purchase or 'back' to return to main menu: ")
-			input, _ := reader.ReadString('\n')
-			input = strings.TrimSpace(input)
+            input, _ := reader.ReadString('\n')
+            input = strings.TrimSpace(input)
 
-			if input == "back" {
-				continue
-			}
+            if input == "back" {
+                continue
+            }
 
-			productID, err := strconv.Atoi(input)
-			if err != nil {
-				fmt.Println("Invalid product ID.")
-				continue
-			}
+            productID, err := strconv.Atoi(input)
+            if err != nil {
+                fmt.Println("Invalid product ID.")
+                continue
+            }
 
-			shop.CheckoutFacade.Checkout(productID)
+            // Adding payment method selection
+            fmt.Println("Select a payment method: 1. Cash, 2. PayPal")
+            fmt.Print("Enter payment method: ")
+            paymentMethod, _ := reader.ReadString('\n')
+            paymentMethod = strings.TrimSpace(paymentMethod)
+
+            var paymentStrategy PaymentStrategy
+            switch paymentMethod {
+            case "1":
+                paymentStrategy = &CashPayment{}
+            case "2":
+                fmt.Print("Enter PayPal email: ")
+                email, _ := reader.ReadString('\n')
+                email = strings.TrimSpace(email)
+                paymentStrategy = &PayPalPayment{email: email}
+            default:
+                fmt.Println("Invalid payment method.")
+                continue
+            }
+
+            shop.CheckoutFacade.CheckoutWithPayment(productID, paymentStrategy)
+
 
 		case 2:
 			fmt.Printf("Your current balance is $%.2f\n", shop.GetFunds())

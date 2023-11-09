@@ -21,7 +21,6 @@ func NewInventoryManager() *InventoryManager {
 			{ID: 4, Name: "Product 4", Price: 40.0},
 			{ID: 5, Name: "Product 5", Price: 50.0},
 			{ID: 6, Name: "Product 6", Price: 60.0},
-
 		},
 	}
 }
